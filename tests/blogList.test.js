@@ -32,6 +32,15 @@ test('a specific title is returned in the blog', async () => {
     expect(titles).toContain('Programming is easy');
 });
 
+test('id exists', async () => {
+    const response = await api.get('/api/blogs');
+
+    const ids = response.body.map(blog => blog.id);
+    ids.forEach(id => {
+        expect(id).toBeDefined();
+    });
+});
+
 afterAll(() => {
     mongoose.connection.close();
 });
