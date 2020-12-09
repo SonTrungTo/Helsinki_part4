@@ -26,6 +26,17 @@ const mostBlogs = (blogList) => {
     return _.orderBy(newList, 'blogs', 'desc')[0];
 };
 
+const mostLikes = (blogList) => {
+    if (blogList.length === 0) return {};
+    let newList = [];
+    _.forEach(_.groupBy(blogList, 'author'), (value, key) => {
+        const totalLikes = value.reduce((sum, { likes }) => sum + likes, 0);
+        let blog = { author: key, likes: totalLikes };
+        newList.push(blog);
+    });
+    return _.orderBy(newList, 'likes', 'desc')[0];
+};
+
 module.exports = {
-    dummy, totalLikes, favoriteBlog, mostBlogs
+    dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 };
