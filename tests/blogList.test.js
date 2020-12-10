@@ -45,7 +45,7 @@ test('new blog is created to /api/blogs', async () => {
     const newBlog = {
         title: 'I am more famous than Jesus himself',
         author: 'Son To',
-        url: 'http://kissmyass.com/',
+        url: 'http://sonto.com/',
         likes: 999
     };
 
@@ -60,6 +60,51 @@ test('new blog is created to /api/blogs', async () => {
     const blogsInDB = await helper.blogsInDB();
     const titles = blogsInDB.map(blog => blog.title);
     expect(titles).toContain('I am more famous than Jesus himself');
+});
+
+test('likes is default to 0', async () => {
+    const newBlog = {
+        title: 'Likes must default to 0',
+        author: 'Son To',
+        url: 'http://sonto.com'
+    };
+
+    await api.post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+
+    const response = await api.get('/api/blogs');
+
+    const likes = response.body.map(response => response.likes);
+    const newLike = likes[likes.length - 1];
+    expect(newLike).toBe(0);
+});
+
+test('title is required', async () => {
+    const newBlog = {
+        author: 'Son To',
+        url: 'title is missing'
+    };
+
+    await api.post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect({ error: 'Blog validation failed: title: Title is required' })
+        .expect('Content-Type', /application\/json/);
+});
+
+test('url is required', async () => {
+    const newBlog = {
+        title: 'url is missing',
+        author: 'Son To'
+    };
+
+    await api.post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect({ error: 'Blog validation failed: url: Url is required' })
+        .expect('Content-Type', /application\/json/);
 });
 
 afterAll(() => {
