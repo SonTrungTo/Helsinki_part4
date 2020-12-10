@@ -41,6 +41,27 @@ test('id exists', async () => {
     });
 });
 
+test('new blog is created to /api/blogs', async () => {
+    const newBlog = {
+        title: 'I am more famous than Jesus himself',
+        author: 'Son To',
+        url: 'http://kissmyass.com/',
+        likes: 999
+    };
+
+    await api.post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+
+    const response = await api.get('/api/blogs');
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 1);
+
+    const blogsInDB = await helper.blogsInDB();
+    const titles = blogsInDB.map(blog => blog.title);
+    expect(titles).toContain('I am more famous than Jesus himself');
+});
+
 afterAll(() => {
     mongoose.connection.close();
 });
