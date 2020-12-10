@@ -92,6 +92,10 @@ test('title is required', async () => {
         .expect(400)
         .expect({ error: 'Blog validation failed: title: Title is required' })
         .expect('Content-Type', /application\/json/);
+
+    const blogsAtEnd = await helper.blogsInDB();
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
 test('url is required', async () => {
@@ -105,6 +109,10 @@ test('url is required', async () => {
         .expect(400)
         .expect({ error: 'Blog validation failed: url: Url is required' })
         .expect('Content-Type', /application\/json/);
+
+    const blogsAtEnd = await helper.blogsInDB();
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
 afterAll(() => {
