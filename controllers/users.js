@@ -3,8 +3,15 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
 usersRouter.post('/', async (req, res) => {
+    const password = req.body.password;
+    if (!password || password.length < 3) {
+        return res.status(401).json({
+            error: 'Password must be at least 3 characters long'
+        });
+    }
+
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const user = new User({
         username: req.body.username,
