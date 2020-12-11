@@ -12,7 +12,13 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: 'hashed_password is required' // This is optional, as I don't want to forget to save hashed password
-    }
+    },
+    blogs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Blog'
+        }
+    ]
 });
 
 userSchema.plugin(uniqueValidator);

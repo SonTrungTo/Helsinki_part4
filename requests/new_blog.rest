@@ -2,8 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Son Jackman",
+    "title": "Finnish are nice people, but they are just different",
     "author": "Son To",
-    "url": "https://github.com/SonTrungTo",
-    "likes": 113
+    "url": "https://localhost:3000.com"
 }

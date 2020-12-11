@@ -10,6 +10,10 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: 'Url is required'
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     likes: {
         type: Number,
         default: 0
