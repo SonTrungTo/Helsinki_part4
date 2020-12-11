@@ -115,6 +115,42 @@ test('url is required', async () => {
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
+describe('remove a blog from bloglist', () => {
+    test('blog is removed with 204 if id is valid', async () => {
+        const blogInDB = await helper.blogsInDB();
+        const blogToRemove = blogInDB[0];
+
+        await api.delete(`/api/blogs/${blogToRemove.id}`)
+            .expect(204);
+
+        const blogsAtEnd = await helper.blogsInDB();
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+        const titles = blogsAtEnd.map(blog => blog.title);
+        expect(titles).not.toContain(blogToRemove.title);
+    });
+
+    test('delete returns code 404 if id does not exist, but valid', async () => {
+        const validNonexistingId = await helper.nonExistingId();
+
+        await api.delete(`/api/blogs/${validNonexistingId}`)
+            .expect(404);
+
+        const blogsInDB = await helper.blogsInDB();
+        expect(blogsInDB).toHaveLength(helper.initialBlogs.length);
+    });
+
+    test('delete returns code 400 if id is invalid', async () => {
+        const invalidId = 'Momoko1968Kikuchi';
+
+        await api.delete(`/api/blogs/${invalidId}`)
+            .expect(400);
+
+        const blogsInDB = await helper.blogsInDB();
+        expect(blogsInDB).toHaveLength(helper.initialBlogs.length);
+    });
+});
+
 afterAll(() => {
     mongoose.connection.close();
 });
