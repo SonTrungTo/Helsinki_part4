@@ -151,6 +151,57 @@ describe('remove a blog from bloglist', () => {
     });
 });
 
+describe('update a blog from bloglist', () => {
+    test('return code 200 if likes update successful', async () => {
+        const blogsAtStart = await helper.blogsInDB();
+        const chosenBlog = blogsAtStart[0];
+        const newInfo = {
+            likes: 1
+        };
+
+        await api.put(`/api/blogs/${chosenBlog.id}`)
+            .send(newInfo)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+            .expect({ ...chosenBlog, likes: newInfo.likes });
+
+        const blogsAtEnd = await helper.blogsInDB();
+        const updatedLikes = blogsAtEnd.map(blog => blog.likes)[0];
+        expect(updatedLikes).toBe(newInfo.likes);
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    });
+
+    test('return code 404 if id is non-existant, but valid', async () => {
+        const validNonexistingId = await helper.nonExistingId();
+        const newInfo = {
+            likes: 1
+        };
+        const blogsAtStart = await helper.blogsInDB();
+
+        await api.put(`/api/blogs/${validNonexistingId}`)
+            .send(newInfo)
+            .expect(404);
+
+        const blogsAtEnd = await helper.blogsInDB();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    });
+
+    test('return code 400 if id is rubbish', async () => {
+        const invalidId = 'InvalidId';
+        const newInfo = {
+            likes: 1
+        };
+        const blogsAtStart = await helper.blogsInDB();
+
+        await api.put(`/api/blogs/${invalidId}`)
+            .send(newInfo)
+            .expect(400);
+
+        const blogsAtEnd = await helper.blogsInDB();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    });
+});
+
 afterAll(() => {
     mongoose.connection.close();
 });
