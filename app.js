@@ -3,6 +3,7 @@ require('express-async-errors');
 const app = express();
 const cors = require('cors');
 const blogsRoute = require('./controllers/blogs');
+const usersRoute = require('./controllers/users');
 const logger = require('./utils/logger');
 const config = require('./utils/config');
 const middleware = require('./utils/middleware');
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.use('/api/blogs', blogsRoute);
+app.use('/api/users', usersRoute);
 
 app.use(middleware.unknownEndpoints);
 app.use(middleware.errorHandler);
