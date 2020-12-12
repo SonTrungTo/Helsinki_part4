@@ -28,8 +28,20 @@ blogsRouter.post('/', async (req, res) => {
 });
 
 blogsRouter.delete('/:blogId', async (req, res) => {
-    const targetBlog = await Blog.findById(req.params.blogId);
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!req.token || !decodedToken.id) {
+        return res.status(401).json({
+            error: 'missing or invalid token'
+        });
+    }
 
+    const loggedInUserId = decodedToken.id;
+    const targetBlog = await Blog.findById(req.params.blogId);
+    if (targetBlog.user.toString() !== loggedInUserId.toString()) {
+        return res.status(403).json({
+            error: 'Action is forbidden'
+        });
+    }
     if (targetBlog) {
         await targetBlog.remove();
     } else {
