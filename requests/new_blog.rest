@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZDNiOWQ4MTUxMTUxYmUwYWJkMGU4OCIsInVzZXJuYW1lIjoibWx1a2thaSIsImlhdCI6MTYwNzgwNjkyOX0.HfeJAZr1PgMUhMlTnSTwFRqjFeW6ufaXC5_tw6ap7es
 
 {
-    "title": "Finnish are nice people, but they are just different",
+    "title": "I like Finland, but if I am talented, U.S is the better choice",
     "author": "Son To",
     "url": "https://localhost:3000.com"
 }
