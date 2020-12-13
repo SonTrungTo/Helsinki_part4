@@ -37,16 +37,14 @@ blogsRouter.delete('/:blogId', async (req, res) => {
 
     const loggedInUserId = decodedToken.id;
     const targetBlog = await Blog.findById(req.params.blogId);
+    if (!targetBlog) return res.status(404).end();
     if (targetBlog.user.toString() !== loggedInUserId.toString()) {
         return res.status(403).json({
             error: 'Action is forbidden'
         });
     }
-    if (targetBlog) {
-        await targetBlog.remove();
-    } else {
-        return res.status(404).end();
-    }
+
+    await targetBlog.remove();
     return res.status(204).end();
 });
 
