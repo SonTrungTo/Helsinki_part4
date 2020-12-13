@@ -1,4 +1,3 @@
 ## This is part 4 of the FullStack Open 2020
 
-We never know what happen (deploy to Heroku?) in the upcoming exercises,
-and I have taken a new liking to create random repos.
+This is the back-end of Bloglist app, which is used to solve exercises in part 5 of the course.
