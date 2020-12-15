@@ -21,11 +21,12 @@ blogsRouter.post('/', async (req, res) => {
     req.body.user = user._id;
     const newBlog = new Blog(req.body);
 
-    const savedBlog = await newBlog.save()
+    const savedBlog = await newBlog.save();
+    const populatedBlog = await Blog.findById(savedBlog._id)
         .populate('user', { username: 1, name: 1 });
-    user.blogs = user.blogs.concat(savedBlog._id);
+    user.blogs = user.blogs.concat(populatedBlog._id);
     await user.save();
-    return res.status(201).json(savedBlog);
+    return res.status(201).json(populatedBlog);
 });
 
 blogsRouter.delete('/:blogId', async (req, res) => {
