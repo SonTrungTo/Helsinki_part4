@@ -75,7 +75,8 @@ blogsRouter.post('/:blogId/comments', async (req, res) => {
     }, { new: true, runValidators: true })
         .populate('user', { username: 1, name: 1 });
     if (targetBlog) {
-        return res.json(targetBlog);
+        const newComment = targetBlog.comments[targetBlog.comments.length - 1];
+        return res.json(newComment);
     } else {
         return res.status(404).end();
     }
