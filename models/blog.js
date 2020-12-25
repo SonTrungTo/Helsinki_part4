@@ -20,7 +20,7 @@ const blogSchema = new mongoose.Schema({
     },
     comments: [
         {
-            text: { type: String, required: 'Comment message is required' }
+            comment: { type: String, required: 'Comment message is required' }
         }
     ]
 });

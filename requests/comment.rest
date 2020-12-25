@@ -1,8 +1,7 @@
-POST http://localhost:3003/api/blogs/5fcf91b211f4426408bf4696/comments
+POST http://localhost:3003/api/blogs/5fcf925b11f4426408bf4697/comments
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZDNiOWFhYTZlZDIyYmNiM2Y4NWZiZiIsInVzZXJuYW1lIjoiaGVsbGFzIiwiaWF0IjoxNjA4OTI3MzU0fQ.0PH-Yn8Qbe0qbXNGKVzbnDYZzyP-7VKxl1FE5FZ0VlU
 
 {
-    "comment": {
-        "text": "This is crazy"
-    }
+    "comment": "Yes man"
 }
