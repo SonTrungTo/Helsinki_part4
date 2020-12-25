@@ -63,6 +63,13 @@ blogsRouter.put('/:blogId', async (req, res) => {
 });
 
 blogsRouter.post('/:blogId/comments', async (req, res) => {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!req.token || !decodedToken.id) {
+        return res.status(401).json({
+            error: 'missing or invalid token'
+        });
+    }
+
     const targetBlog = await Blog.findByIdAndUpdate( req.params.blogId, {
         $push: { comments: req.body.comment }
     }, { new: true, runValidators: true })
